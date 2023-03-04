@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+      }
+      * {
+        border: 0;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
+      }
+      body, button, input {
+        font: 1em Hind, sans-serif;
+        line-height: 1.5em;
+      }
+      body, input {
+        color: #171717;
+      }
+      body, .search-bar {
+        display: flex;
+      }
+      body {
+        background: #ffffff;
+        height: 100vh;
+      }
+      .search-bar input,
+      .search-btn, 
+      .search-btn:before, 
+      .search-btn:after {
+        transition: all 0.25s ease-out;
+      }
+      .search-bar input,
+      .search-btn {
+        width: 3em;
+        height: 3em;
+      }
+      .search-bar input:invalid:not(:focus),
+      .search-btn {
+        cursor: pointer;
+      }
+      .search-bar,
+      .search-bar input:focus,
+      .search-bar input:valid  {
+        width: 100%;
+      }
+      .search-bar input:focus,
+      .search-bar input:not(:focus) + .search-btn:focus {
+        outline: transparent;
+      }
+      .search-bar {
+        margin: auto;
+        padding: 1.5em;
+        justify-content: center;
+        max-width: 30em;
+      }
+      .search-bar input {
+        background: transparent;
+        border-radius: 1.5em;
+        box-shadow: 0 0 0 0.4em #171717 inset;
+        padding: 0.75em;
+        transform: translate(0.5em,0.5em) scale(0.5);
+        transform-origin: 100% 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+      .search-bar input::-webkit-search-decoration {
+        -webkit-appearance: none;
+      }
+      .search-bar input:focus,
+      .search-bar input:valid {
+        background: #fff;
+        border-radius: 0.375em 0 0 0.375em;
+        box-shadow: 0 0 0 0.1em #d9d9d9 inset;
+        transform: scale(1);
+      }
+      .search-btn {
+        background: #171717;
+        border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
+        padding: 0.75em;
+        position: relative;
+        transform: translate(0.25em,0.25em) rotate(45deg) scale(0.25,0.125);
+        transform-origin: 0 50%;
+      }
+      .search-btn:before, 
+      .search-btn:after {
+        content: "";
+        display: block;
+        opacity: 0;
+        position: absolute;
+      }
+      .search-btn:before {
+        border-radius: 50%;
+        box-shadow: 0 0 0 0.2em #ffffff inset;
+        top: 0.75em;
+        left: 0.75em;
+        width: 1.2em;
+        height: 1.2em;
+      }
+      .search-btn:after {
+        background: #ffffff;
+        border-radius: 0 0.25em 0.25em 0;
+        top: 51%;
+        left: 51%;
+        width: 0.75em;
+        height: 0.25em;
+        transform: translate(0.2em,0) rotate(45deg);
+        transform-origin: 0 50%;
+      }
+      .search-btn span {
+        display: inline-block;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+      }
+
+      /* Active state */
+      .search-bar input:focus + .search-btn,
+      .search-bar input:valid + .search-btn {
+        background: #000000;
+        border-radius: 0 0.375em 0.375em 0;
+        transform: scale(1);
+      }
+      .search-bar input:focus + .search-btn:before, 
+      .search-bar input:focus + .search-btn:after,
+      .search-bar input:valid + .search-btn:before, 
+      .search-bar input:valid + .search-btn:after {
+        opacity: 1;
+      }
+      .search-bar input:focus + .search-btn:hover,
+      .search-bar input:valid + .search-btn:hover,
+      .search-bar input:valid:not(:focus) + .search-btn:focus {
+        background: #c1c1c1;
+      }
+      .search-bar input:focus + .search-btn:active,
+      .search-bar input:valid + .search-btn:active {
+        transform: translateY(1px);
+      }
+
+      @media screen and (prefers-color-scheme: dark) {
+        body, input {
+          color: #ffffff;
+        }
+        body {
+          background: #171717;
+        }
+        .search-bar input {
+          box-shadow: 0 0 0 0.4em #ffffff inset;
+        }
+        .search-bar input:focus,
+        .search-bar input:valid {
+          background: #3d3d3d;
+          box-shadow: 0 0 0 0.1em #3d3d3d inset;
+        }
+        .search-btn {
+          background: #ffffff;
+        }
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Authentication</title>
+  </head>
+  <body>
+  {% if user.is_authenticated %}
+  <div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+      <a class="w3-bar-item w3-button" type="submit" href="/signout"><b>Open</b>Care</a>
+      <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right">
+            <a href="/profile" class="w3-bar-item w3-button" type="submit">Profile</a>
+            <a href="/yourdata" class="w3-bar-item w3-button" type="submit">Your Data</a>
+            <a href="/favorites" class="w3-bar-item w3-button" type="submit">News</a>
+            <a href="/leaderboard" class="w3-bar-item w3-button" type="submit">Daily Tops</a>
+            <a href="/search" class="w3-bar-item w3-button"><b>Search</b></a>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <form method="post" action="/search" class="search-bar">
+    {% csrf_token %}
+    <input type="search" name="search" pattern=".*\S.*" required>
+    <button class="search-btn" type="submit">
+      <span>Search</span>
+    </button>
+  </form>
+  {% else %}
+  <!-- Navbar (sit on top) -->
+  <div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+      <a href="#home" class="w3-bar-item w3-button"><b>Open</b>Care</a>
+      <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right w3-hide-small">
+        <a href="#about" class="w3-bar-item w3-button">About</a>
+        <a class="w3-bar-item w3-button" href="/signin">Sign In</a>
+        <a class="w3-bar-item w3-button" href="/signup">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    {% load static %}
+    <img class="w3-image" src="{% static 'media/title2.jpg' %}" alt="Architecture" width="1500" height="800">
+    <div class="w3-display-middle w3-margin-top w3-center">
+      <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>Open</b>Care</span></h1>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <div class="w3-content w3-padding" style="max-width:1564px">
+
+    <!-- About Section -->
+    <div class="w3-container w3-padding-32" id="about">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>About</b></h3>
+      <p>A platform for guardians and users to keep track of medical data using our different set of wearables.
+      </p>
+    </div>
+
+    <!-- What we support Section -->
+    <div class="w3-container w3-padding-64">
+      <div class="w3-col l2 m6 w3-margin-bottom" style="margin: 25px;">
+        <img src="{% static '/media/verify.png' %}" style="margin-left: 70px; margin-right: 10px; width:25%">
+        <h3><b>Verify your identity</b></h3>
+        <p>Verify your identity as a guardian or user to start your journey.</p>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom" style="margin: 25px;">
+        <img src="{% static '/media/fundacc.png' %}" style="margin-left: 70px; margin-right: 10px; width:25%">
+        <h3><b>Link your device</b></h3>
+        <p>Link your wearable with your account.</p>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom" style="margin: 25px;">
+        <img src="{% static '/media/condition.png' %}" style="margin-left: 70px; margin-right: 10px; width:25%">
+        <h3><b>View your data</b></h3>
+        <p>View your data alongside additional AI generated comments.</p>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom" style="margin: 25px;">
+        <img src="{% static '/media/acceptorreject.png' %}" style="margin-left: 70px; margin-right: 10px; width:25%">
+        <h3><b>Share your data</b></h3>
+        <p>Make your data available to the public or to a select few individuals.</p>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom" style="margin: 25px;">
+        <img src="{% static '/media/borrow.png' %}" style="margin-left: 70px; margin-right: 10px; width:25%">
+        <h3><b>View other's data</b></h3>
+        <p>Find publicly listed data or data shared with you. Shortlist them to keep track of your loved ones.</p>
+      </div>
+    </div>
+
+    <!-- Our Devices Section -->
+    <div class="w3-container w3-padding-32" id="about">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>Our Devices</b></h3>
+      <h4><b>Smart Breathing Mask 1.0</b></h4>
+      </p>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="w3-container w3-padding-32" id="contact">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>Contact</b></h3>
+      <p>Contact us if you have any concerns.</p>
+      <form action="/action_page.php" target="_blank">
+        <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+        <input class="w3-input w3-section w3-border" type="text" placeholder="Email" required name="Email">
+        <input class="w3-input w3-section w3-border" type="text" placeholder="Subject" required name="Subject">
+        <input class="w3-input w3-section w3-border" type="text" placeholder="Comment" required name="Comment">
+        <button class="w3-button w3-black w3-section" type="submit">
+          <i class="fa fa-paper-plane"></i> SEND MESSAGE
+        </button>
+      </form>
+    </div>
+  <!-- Image of location/map -->
+  <div class="w3-container">
+    <img src="{% static 'media/stripeimage.png' %}" class="w3-image" style="width:10%">
+  </div>
+  <!-- End page content -->
+  </div>
+  <!-- Footer -->
+  <footer class="w3-center w3-black w3-padding-16">
+    <p>Created at Imperial College London</p>
+  </footer>
+  {% endif %}
+  </body>
+</html>
